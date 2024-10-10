@@ -4,7 +4,8 @@ import asyncio
 from aiogram import Bot, Dispatcher
 from dotenv import load_dotenv, find_dotenv
 
-from router import router
+from app.routers.main import main_router
+from app.routers.add_rss import add_rss_router
 
 
 async def main() -> None:
@@ -13,7 +14,7 @@ async def main() -> None:
     bot = Bot(token=os.getenv('TOKEN'))
     print(f'Loaded bot {bot.id} with token {bot.token}')
     dp = Dispatcher()
-    dp.include_router(router)
+    dp.include_routers(main_router, add_rss_router)
     
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)

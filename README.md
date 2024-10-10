@@ -1,8 +1,8 @@
-# Mew Exchange
+# Mew Monitoring
 
-Bot: https://t.me/mew_exchange_bot
+Bot: https://t.me/mew_rss_monitoring_bot
 
 
 ## About
 
-Bot gets the relevant currency rates using ExchangeRates API.
+Bot gets the info from the RSS channels provided by the user.
