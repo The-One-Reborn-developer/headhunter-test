@@ -6,6 +6,7 @@ from dotenv import load_dotenv, find_dotenv
 
 from app.routers.main import main_router
 from app.routers.add_rss import add_rss_router
+from app.routers.help import help_router
 
 from app.database.queue.initialize_database import initialize_database
 
@@ -16,7 +17,7 @@ async def main() -> None:
     bot = Bot(token=os.getenv('TOKEN'))
     print(f'Loaded bot {bot.id} with token {bot.token}')
     dp = Dispatcher()
-    dp.include_routers(main_router, add_rss_router)
+    dp.include_routers(main_router, add_rss_router, help_router)
 
     await initialize_database()
     
