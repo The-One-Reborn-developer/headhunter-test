@@ -1,6 +1,9 @@
-import feedparser
-from datetime import datetime, timedelta
 import pytz
+import feedparser
+
+from datetime import datetime, timedelta
+from bs4 import BeautifulSoup
+
 
 async def fetch_rss_feed(url):
     return feedparser.parse(url)
@@ -24,19 +27,16 @@ async def get_news_last_hour(url, hours=1):
             print(f"Error parsing date for entry: {entry} - {e}")
             published = None
 
+        description = entry.summary
+        description_stripped = BeautifulSoup(description, "html.parser").get_text() 
+
         if published and current_time - published <= timedelta(hours=hours):
             recent_news.append({
                 'title': entry.title,
-                'description': entry.summary,  # Use summary for a brief description
+                'description': description_stripped,  # Use summary for a brief description
                 'link': entry.link,
                 'author': entry.author if hasattr(entry, 'author') else 'Unknown',
                 'published': published.strftime('%Y-%m-%d %H:%M:%S %Z')
             })
     
-    for news in recent_news:
-        print(f"Title: {news['title']}")
-        print(f"Description: {news['description']}")
-        print(f"Link: {news['link']}")
-        print(f"Author: {news['author']}")
-        print(f"Published: {news['published']}")
-        print("---")
+    return recent_news
