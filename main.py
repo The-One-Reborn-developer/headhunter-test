@@ -7,6 +7,8 @@ from dotenv import load_dotenv, find_dotenv
 from app.routers.main import main_router
 from app.routers.add_rss import add_rss_router
 
+from app.database.queue.initialize_database import initialize_database
+
 
 async def main() -> None:
     load_dotenv(find_dotenv())
@@ -15,6 +17,8 @@ async def main() -> None:
     print(f'Loaded bot {bot.id} with token {bot.token}')
     dp = Dispatcher()
     dp.include_routers(main_router, add_rss_router)
+
+    await initialize_database()
     
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
