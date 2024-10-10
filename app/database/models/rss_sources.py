@@ -13,4 +13,4 @@ class RSSSources(Base):
     url: Mapped[str] = mapped_column(String)
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
 
-    user: Mapped['User'] = relationship('User', back_populates='rss_sources')
+    user: Mapped['User'] = relationship('User', back_populates='rss_sources') # type: ignore
