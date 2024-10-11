@@ -1,14 +1,14 @@
 import os
+
+from sqlalchemy import create_engine
+
 from dotenv import load_dotenv, find_dotenv
-
-from sqlalchemy.ext.asyncio import create_async_engine
-
 
 load_dotenv(find_dotenv())
 
-database_url = os.getenv('DATABASE_URL')
+database_url = os.getenv('DATABASE_SYNC_URL')
 
 if not database_url:
-    raise ValueError("DATABASE_URL is not set in the environment variables.")
+    raise ValueError("DATABASE_SYNC_URL is not set in the environment variables.")
 
-engine = create_async_engine(database_url, echo=True)
+engine = create_engine(database_url, echo=True)

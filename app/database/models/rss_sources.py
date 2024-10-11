@@ -1,7 +1,5 @@
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy.types import String
-from sqlalchemy.orm import relationship
-from sqlalchemy import ForeignKey
+from sqlalchemy.types import String, Integer
 
 from app.database.models.base import Base
 
@@ -11,4 +9,4 @@ class RSSSources(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     url: Mapped[str] = mapped_column(String)
-    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
+    user_id: Mapped[int] = mapped_column(Integer)

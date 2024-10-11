@@ -1,15 +1,13 @@
 import pytz
 import feedparser
-
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 
-
-async def fetch_rss_feed(url):
+def fetch_rss_feed(url):
     return feedparser.parse(url)
 
-async def get_news_last_day(url, hours=24):
-    feed = await fetch_rss_feed(url)
+def get_news_last_day(url, hours=24):
+    feed = fetch_rss_feed(url)
 
     tz = pytz.timezone('Europe/Moscow')
     current_time = datetime.now(tz)
@@ -18,11 +16,29 @@ async def get_news_last_day(url, hours=24):
     for entry in feed.entries:
         try:
             published_str = entry.published
-            
+
             if 'GMT' in published_str:
                 published_str = published_str.replace('GMT', '+0000')
+            
+            published_formats = [
+                '%a, %d %b %Y %H:%M:%S %z',
+                '%Y-%m-%dT%H:%M:%S.%fZ',
+                '%Y-%m-%dT%H:%M:%SZ',
+                '%d.%m.%Y'
+            ]
 
-            published = datetime.strptime(published_str, '%a, %d %b %Y %H:%M:%S %z')
+            published = None
+            for fmt in published_formats:
+                try:
+                    published = datetime.strptime(published_str, fmt)
+                    break
+                except ValueError:
+                    continue
+            
+            if published is None:
+                print(f"Could not parse date for entry: {entry.title} - raw date string: {published_str}")
+                published = None
+
         except (AttributeError, KeyError) as e:
             print(f"Error parsing date for entry: {entry} - {e}")
             published = None

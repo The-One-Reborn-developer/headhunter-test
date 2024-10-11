@@ -1,11 +1,10 @@
-import asyncio
 import celery
 import logging
 
 from celery.schedules import crontab
 
 
-app = celery.Celery('tasks', broker='redis://localhost:6379/0')
+app = celery.Celery('tasks', broker='redis://redis:6379/0')
 
 
 app.conf.update(
@@ -14,7 +13,7 @@ app.conf.update(
         'app.tasks.celery_tasks.store_news_last_day': {'queue': 'celery'}
     },
     broker_connection_retry_on_startup=True,
-    result_backend='redis://localhost:6379/0',
+    result_backend='redis://redis:6379/0',
     beat_schedule={
         'store_news_last_hour': {
             'task': 'app.tasks.celery_tasks.store_news_last_hour',
@@ -33,7 +32,7 @@ app.conf.update(
 def store_news_last_hour():
     from app.scripts.store_news_last_hour import store_news_last_hour
     logging.info("store_news_last_hour task started.")
-    asyncio.run(store_news_last_hour())
+    store_news_last_hour()
     logging.info("store_news_last_hour task finished.")
 
 
@@ -41,5 +40,5 @@ def store_news_last_hour():
 def store_news_last_day():
     from app.scripts.store_news_last_day import store_news_last_day
     logging.info("store_news_last_day task started.")
-    asyncio.run(store_news_last_day())
+    store_news_last_day()
     logging.info("store_news_last_day task finished.")
