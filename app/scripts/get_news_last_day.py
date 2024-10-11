@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 async def fetch_rss_feed(url):
     return feedparser.parse(url)
 
-async def get_news_last_hour(url, hours=1):
+async def get_news_last_day(url, hours=24):
     feed = await fetch_rss_feed(url)
 
     tz = pytz.timezone('Europe/Moscow')

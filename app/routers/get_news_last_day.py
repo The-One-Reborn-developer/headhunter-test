@@ -9,17 +9,17 @@ from app.keyboards.back_to_main_keyboard import back_to_main_keyboard
 
 MAX_CONTENT_LENGTH = 4096
 
-get_news_last_hour_router = Router()
+get_news_last_day_router = Router()
 
 
-@get_news_last_hour_router.callback_query(F.data == 'last_hour')
+@get_news_last_day_router.callback_query(F.data == 'last_day')
 async def get_news_last_hour_callback(message: CallbackQuery):
-    with open('app/temp/last_hour.json', 'r', encoding='utf-8') as f:
+    with open('app/temp/last_day.json', 'r', encoding='utf-8') as f:
         user_id = await get_user_id(message.from_user.id)
         user_news = [item for item in json.load(f) if item['user_id'] == user_id]
 
         if not user_news:
-            content = 'Пока нет новостей за последний час 😿'
+            content = 'Пока нет новостей за последние сутки 😿'
 
             await message.message.edit_text(content, reply_markup=back_to_main_keyboard())
         else:
