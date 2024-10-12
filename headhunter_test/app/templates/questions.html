@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Questions
+{% endblock %}
+
+{% block content %}
+    <h1>Questions page</h1>
+        <form action="{% url 'questions' %}" method="post">
+            {% csrf_token %}
+            <label for="question1">How much does the cloud weigh?</label>
+            <input type="text" name="question1" id="question1">
+            <label for="question2">What is the equivalent of gold in cryptocurrency?</label>
+            <input type="text" name="question2" id="question2">
+            <label for="question3">What is the worlds`s smallest island country?</label>
+            <input type="text" name="question3" id="question3">
+            <input type="submit" value="Submit">
+        </form>
+{% endblock %}
