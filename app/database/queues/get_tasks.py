@@ -11,4 +11,4 @@ def get_tasks():
 
             tasks = result.scalars().all()
 
-            return tasks
+            return [{'id': task.id, 'title': task.title, 'description': task.description, 'created_at': task.created_at} for task in tasks]
