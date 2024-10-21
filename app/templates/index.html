@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+
+    <title>Tasks Manager</title>
+</head>
+<body>
+    <h1>Tasks Manager</h1>
+
+    <button onclick="toggleForm('add')">Add Task</button>
+
+    <div id="add-form" class="form-container">
+        <h2>Add Task</h2>
+        <input type="text" id="add-title" placeholder="Title" required>
+        <input type="text" id="add-description" placeholder="Description" required>
+        <button onclick="addTask()">Add</button>
+        <button onclick="toggleForm('add')">Cancel</button>
+    </div>
+
+    <h2>Tasks List</h2>
+    <div id="tasks"></div>
+</body>
+</html>

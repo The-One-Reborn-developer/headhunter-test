@@ -1,5 +1,5 @@
-from app.database.models.task import Task
-from app.database.models.sync_session import sync_session
+from database.models.task import Task
+from database.models.sync_session import sync_session
 
 
 def post_task(title, description) -> None:

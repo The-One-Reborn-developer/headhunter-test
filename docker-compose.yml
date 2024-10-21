@@ -1,0 +1,26 @@
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - DATABASE_URL=postgresql+psycopg2://admin:admin@database:5432/tasks
+    depends_on:
+      database:
+        condition: service_healthy
+
+  database:
+    image: postgres:16.4
+    restart: always
+    environment:
+      POSTGRES_DB: tasks
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d tasks -h localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s 

@@ -1,12 +1,20 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
+from flask_cors import CORS
 
-from app.database.queues.get_tasks import get_tasks
-from app.database.queues.post_task import post_task
-from app.database.queues.put_task import put_task
-from app.database.queues.delete_task import delete_task
+from database.queues.create_database_tables import create_database_tables
+from database.queues.get_tasks import get_tasks
+from database.queues.post_task import post_task
+from database.queues.put_task import put_task
+from database.queues.delete_task import delete_task
 
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='/app/templates', static_folder='/app/static')
+CORS(app)
+
+
+@app.route('/')
+def serve_homepage():
+    return render_template('index.html')
 
 
 @app.route('/tasks', methods=['GET'])
@@ -56,4 +64,5 @@ def delete_task_api(id):
 
 
 if __name__ == '__main__':
+    create_database_tables()
     app.run(debug=True, host='0.0.0.0', port=5000)

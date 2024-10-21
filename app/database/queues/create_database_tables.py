@@ -1,6 +1,6 @@
-from app.database.models.base import Base
-from app.database.models.task import Task
-from app.database.models.sync_engine import sync_engine
+from database.models.base import Base
+from database.models.task import Task
+from database.models.sync_engine import sync_engine
 
 
 def create_database_tables() -> None:
