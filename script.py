@@ -1,4 +1,5 @@
 import requests
+import json
 
 from bs4 import BeautifulSoup
 
@@ -6,9 +7,7 @@ from bs4 import BeautifulSoup
 base_url = "https://quotes.toscrape.com/page/{}/"
 total_pages = 10
 
-all_quotes = []
-all_authors = []
-all_tags = []
+quotes_data = []
 
 for page in range(1, total_pages + 1):
     response = requests.get(base_url.format(page))
@@ -18,17 +17,16 @@ for page in range(1, total_pages + 1):
     
     for quote in quotes:
         text = quote.find('span', class_='text').get_text()
-        all_quotes.append(text)
         
         author = quote.find('small', class_='author').get_text()
-        all_authors.append(author)
         
         tags = [tag.get_text() for tag in quote.find('div', class_='tags').find_all('a', class_='tag')]
-        all_tags.append(tags)
 
-with open('quotes.txt', 'w') as file:
-    for i in range(len(all_quotes)):
-        file.write(f"Quote: {all_quotes[i]}\n")
-        file.write(f"Author: {all_authors[i]}\n")
-        file.write(f"Tags: {', '.join(all_tags[i])}\n\n")
-        file.write("-"*40 + "\n\n")
+        quotes_data.append({
+            'text': text,
+            'author': author,
+            'tags': tags
+        })
+
+with open('quotes.json', 'w') as f:
+    json.dump(quotes_data, f, indent=4)
